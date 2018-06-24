@@ -6,12 +6,19 @@ public class Bullet extends GameObject {
 
 	private Handler handler;
 	
+	private int bulletSpeed = 10;
+	
 	public Bullet(int x, int y, ID id, Handler handler, int mouseX, int mouseY) {
 		super(x, y, id);
 		this.handler = handler;
 		
-		velX = (mouseX - x) / 10;
-		velY = (mouseY - y) / 10;
+		int dX = mouseX - x;
+		int dY = mouseY - y;
+		
+		double unitVector = Math.sqrt(dX*dX+dY*dY);
+		
+		velX = Math.round((bulletSpeed*dX)/unitVector);
+		velY = Math.round((bulletSpeed*dY)/unitVector);
 	}
 
 	public void tick() {
