@@ -8,8 +8,8 @@ public class Bullet extends GameObject {
 	
 	private int bulletSpeed = 10;
 	
-	public Bullet(int x, int y, ID id, Handler handler, int mouseX, int mouseY) {
-		super(x, y, id);
+	public Bullet(int x, int y, ID id, Handler handler, int mouseX, int mouseY, SpriteSheet ss) {
+		super(x, y, id, ss);
 		this.handler = handler;
 		
 		int dX = mouseX - x;
