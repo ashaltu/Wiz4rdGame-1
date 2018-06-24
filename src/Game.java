@@ -10,10 +10,18 @@ public class Game extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L; 
 	
     private boolean isRunning = false;
+    
     private Thread thread;
     private Handler handler;
-    private BufferedImage world = null;
     private Camera camera;
+    private SpriteSheet ss;
+    
+    private BufferedImage world = null;
+    private BufferedImage sprite_sheet = null;
+    private BufferedImage floor = null;
+    
+    public int ammo = 100;
+    public int hp = 100;
 
     public Game() {
         new Window(1000, 563, "Wiz4rd Game", this);
@@ -22,12 +30,18 @@ public class Game extends Canvas implements Runnable{
 
         handler = new Handler();
         camera = new Camera(0, 0);
+        
         this.addKeyListener(new KeyInput(handler));
-        this.addMouseListener(new MouseInput(handler, camera));
         
         BufferedImageLoader loader = new BufferedImageLoader();
         world = loader.loadImage("/Wizardry_World.png");
+        sprite_sheet = loader.loadImage("/Features_SpriteSheet.png");
         
+        ss = new SpriteSheet(sprite_sheet);
+        floor = ss.grabImage(4, 2, 32, 32);
+        
+        this.addMouseListener(new MouseInput(handler, camera, this, ss));
+
         loadLevel(world);
     }
 
@@ -88,9 +102,10 @@ public class Game extends Canvas implements Runnable{
         handler.tick();
     }
 
-    //render everything in game - couple thousand times a second
+    //render ("draws") everything in game - couple thousand times a second
     public void render() {
         BufferStrategy bs = this.getBufferStrategy();
+        
         if(bs == null) {
             this.createBufferStrategy(3);   //preloading frames before they are shown
             return;
@@ -100,18 +115,34 @@ public class Game extends Canvas implements Runnable{
         Graphics2D g2d = (Graphics2D) g;
         //////////////////////////////////
         
-        g.setColor(Color.red);
-        g.fillRect(0, 0, 1000, 563);
-        
         g2d.translate(-camera.getX(), -camera.getY());
         
-        g.setColor(Color.red);
-        g.fillRect(0, 0, 1000, 563);
+        for(int xx = 0; xx < 30 * 72; xx+=32) {
+        	for(int yy = 0; yy < 30 * 72; yy+=32) {
+        		g.drawImage(floor, xx, yy, null);
+        	}
+        }
 
         handler.render(g);
         
         g2d.translate(camera.getX(), camera.getY());
-
+        
+        
+        g.setColor(Color.gray);
+        g.fillRect(5, 5, 200, 32);
+        
+        g.setColor(Color.red);
+        g.fillRect(5, 5, hp*2, 32);
+        if(hp == 0) {
+        	g.setColor(Color.green);
+        	g.drawString("Game Over!", 500, 250);
+        }
+        
+        g.setColor(Color.black);
+        g.drawRect(5, 5, 200, 32);
+        
+        g.setColor(Color.orange);
+        g.drawString("Spells: " + ammo, 5, 50);
 
         //////////////////////////////////
         g.dispose();
@@ -131,14 +162,17 @@ public class Game extends Canvas implements Runnable{
 				int green = (pixel >> 8) & 0xff;
 				int blue = (pixel) & 0xff;
 
-				if(red == 255 && blue != 255 && green != 255) {
-					handler.addObject(new Block(xx * 32, yy * 32, ID.Block));
+				if(red == 255) {
+					handler.addObject(new Block(xx * 32, yy * 32, ID.Block, ss));
 				}
-				if(blue == 255) {
-					handler.addObject(new Wizard(xx * 32, yy * 32, ID.Player, handler));
+				if(blue == 255 && green == 0) {
+					handler.addObject(new Wizard(xx * 32, yy * 32, ID.Player, handler, this, ss));
 				}
-				if(green == 255) {
-					handler.addObject(new Enemy(xx * 32, yy * 32, ID.Enemy, handler));
+				if(green == 255 && blue == 0) {
+					handler.addObject(new Enemy(xx * 32, yy * 32, ID.Enemy, handler, ss));
+				}
+				if(green == 255 && blue == 255) {
+					handler.addObject(new Crate(xx * 32, yy * 32, ID.Crate, ss));
 				}
 			}
 		}

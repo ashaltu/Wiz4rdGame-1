@@ -1,5 +1,3 @@
-
-
 /*
  * Enumerations serve the purpose of representing a group of named constants in a programming language. For 
  * example the 4 suits in a deck of playing cards may be 4 enumerators named Club, Diamond, 

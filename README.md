@@ -1,14 +1,5 @@
-# Wiz4rdGame
+Simple Wizard Top Down Shooter Game to become familiarized with writing code for a game. Interesting, easy way to get started.
 
-PROBLEMS & SOLUTIONS:
-#1 - Problem: When Movement Keys (W, S, A, D) are continuously pressed then released, the player (Wizard) does not move but 
-pauses for a while before respond again to keyPressed, sometimes does not even respond at all and User would have to turn off 
-game and restart game again.
-#1 - Attempted Solutions: A) Changing the code but that was just a little tedious especially having to change many things from 
-many different Objects B) Connecting the device to another keyboard, but the problem still occurred C) Contemplating giving
-up and cry in a corner after hours and hours of research, JK! /////
-Functional Solution: Apparently, when keys are continuously pressed on MacOS (High Sierra), an Accent Menu bar would pop up.
-Thus, preventing the User from producing let's say "eeeeeeeeee" for example when the key "e" is pressed continuously. All that
-was needed to be done was to DISABLE the keyboard from displaying the Accent Menu when a key is continuously pressed. DISABLE by
-opening APPLICATIONS then open UTILITIES then open TERMINAL then input "defaults write -g ApplePressAndHoldEnabled -bool false"
-into TERMINAL then click enter. Lastly, restart device and have fun!
+<img src="https://user-images.githubusercontent.com/40379856/41816558-5ecbde26-773d-11e8-9195-2fed03b90f76.png" width="45%"></img> 
+
+<img src="https://user-images.githubusercontent.com/40379856/41816570-9520128a-773d-11e8-9d04-568962c3d45e.png" width="45%"></img> 

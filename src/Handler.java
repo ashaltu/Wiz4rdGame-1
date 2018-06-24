@@ -1,11 +1,10 @@
 import java.awt.*;
 import java.util.*;
 
-
 //handles (updates) all GameObjects that could possibly be in the Game
 public class Handler {
 	
-    LinkedList<GameObject> object = new LinkedList<GameObject>();
+    ArrayList<GameObject> object = new ArrayList<GameObject>();
     
     private boolean up = false, down = false, right = false, left = false;
 

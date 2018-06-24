@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Enemy extends GameObject{
@@ -8,11 +9,20 @@ public class Enemy extends GameObject{
 	private Handler handler;
 	Random r = new Random();
 	int choose = 0;
-	int hp = 0;
+	int hp = 100;
 	
-	public Enemy(int x, int y, ID id, Handler handler) {
-		super(x, y, id);
+	private BufferedImage[] enemyImage = new BufferedImage[3];
+	Animation animation;
+	
+	public Enemy(int x, int y, ID id, Handler handler, SpriteSheet ss) {
+		super(x, y, id, ss);
 		this.handler = handler;
+		
+		enemyImage[0] = ss.grabImage(4, 1, 32, 32);
+		enemyImage[1] = ss.grabImage(5, 1, 32, 32);
+		enemyImage[2] = ss.grabImage(6, 1, 32, 32);
+		
+		animation = new Animation(3, enemyImage[0], enemyImage[1], enemyImage[2]);
 	}
 
 	public void tick() {
@@ -26,8 +36,8 @@ public class Enemy extends GameObject{
 
             if(tempObject.getId() == ID.Block) {
             	if(getBoundsBig().intersects(tempObject.getBounds())) {
-            		x += (velX * 5) * -1;
-            		y += (velY * 5) * -1;
+            		x += (velX * 4) * -1;
+            		y += (velY * 4) * -1;
             		velX *= -1;
             		velY *= -1;
             	} else if(choose == 0) {
@@ -44,15 +54,15 @@ public class Enemy extends GameObject{
             }
         }
 		
+		animation.runAnimation();
+		
 		if(hp <= 0) {
 			handler.removeObject(this);
 		}
-		
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.yellow);
-		g.fillRect(x, y, 32, 32);
+		animation.drawAnimation(g, x, y, 0);
 	}
 
 	public Rectangle getBounds() {
@@ -60,7 +70,7 @@ public class Enemy extends GameObject{
 	}
 	
 	public Rectangle getBoundsBig() {
-		return new Rectangle(x-16, y-16, 64, 64);
+		return new Rectangle(x-16, y-16, 55, 55);
 	}
 
 }

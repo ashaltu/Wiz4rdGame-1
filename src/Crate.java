@@ -3,14 +3,14 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Block extends GameObject{
+public class Crate extends GameObject{
 	
-	private BufferedImage blockImage;
+	private BufferedImage crateImage;
 
-	public Block(int x, int y, ID id, SpriteSheet ss) {
+	public Crate(int x, int y, ID id, SpriteSheet ss) {
 		super(x, y, id, ss);
 		
-		blockImage = ss.grabImage(5, 2, 32, 32);
+		crateImage = ss.grabImage(6, 2, 32, 32);
 	}
 
 	public void tick() {
@@ -18,7 +18,7 @@ public class Block extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(blockImage, x, y, null);
+		g.drawImage(crateImage, x, y, null);
 	}
 
 	public Rectangle getBounds() {

@@ -2,7 +2,7 @@ import java.awt.event.*;
 
 public class KeyInput extends KeyAdapter {
 	
-	Handler handler;
+	private Handler handler;
 	
 	public KeyInput(Handler handler) {
 		this.handler = handler;
@@ -53,4 +53,5 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 	}
+	
 }
